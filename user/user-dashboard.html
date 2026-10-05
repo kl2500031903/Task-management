@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>User Dashboard | TaskFlow</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            min-height: 100vh;
+            background: radial-gradient( circle at 90% 10%, rgba(139, 92, 246, 0.10), transparent 25%), #f5f7fb;
+            color: #172033;
+        }
+        /* ==============================
+           HEADER
+        ============================== */
+        
+        .topbar {
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 35px;
+            background: rgba(255, 255, 255, 0.90);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid #e5e7eb;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: #172033;
+            font-size: 23px;
+            font-weight: 800;
+        }
+        
+        .brand-icon {
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 11px;
+            background: linear-gradient( 135deg, #6366f1, #8b5cf6);
+            color: white;
+            box-shadow: 0 7px 15px rgba(99, 102, 241, 0.22);
+        }
+        
+        .brand span {
+            color: #6366f1;
+        }
+        
+        .user-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-name {
+            color: #475569;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .logout-btn {
+            border: none;
+            padding: 9px 16px;
+            border-radius: 8px;
+            background: #fee2e2;
+            color: #dc2626;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        .logout-btn:hover {
+            background: #fecaca;
+        }
+        /* ==============================
+           LAYOUT
+        ============================== */
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: 230px 1fr;
+            min-height: calc(100vh - 70px);
+        }
+        /* ==============================
+           SIDEBAR
+        ============================== */
+        
+        .sidebar {
+            background: white;
+            border-right: 1px solid #e5e7eb;
+            padding: 25px 15px;
+        }
+        
+        .sidebar-title {
+            color: #94a3b8;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0 12px;
+            margin-bottom: 12px;
+        }
+        
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            margin-bottom: 5px;
+            border-radius: 9px;
+            text-decoration: none;
+            color: #64748b;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+        
+        .sidebar a:hover,
+        .sidebar a.active {
+            background: #eef2ff;
+            color: #6366f1;
+        }
+        
+        .sidebar-icon {
+            width: 25px;
+            text-align: center;
+            font-size: 16px;
+        }
+        /* ==============================
+           MAIN
+        ============================== */
+        
+        .main-content {
+            padding: 35px;
+            max-width: 1400px;
+            width: 100%;
+            margin: auto;
+        }
+        
+        .welcome {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        
+        .welcome h1 {
+            font-size: 30px;
+            color: #111827;
+            margin-bottom: 7px;
+        }
+        
+        .welcome p {
+            color: #64748b;
+            font-size: 14px;
+        }
+        
+        .add-task-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 12px 18px;
+            border-radius: 10px;
+            background: linear-gradient( 135deg, #6366f1, #8b5cf6);
+            color: white;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+            box-shadow: 0 8px 18px rgba(99, 102, 241, 0.22);
+            transition: 0.3s;
+        }
+        
+        .add-task-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(99, 102, 241, 0.3);
+        }
+        /* ==============================
+           STAT CARDS
+        ============================== */
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+        
+        .stat-card {
+            padding: 22px;
+            background: white;
+            border: 1px solid #edf0f5;
+            border-radius: 15px;
+            box-shadow: 0 6px 20px rgba(15, 23, 42, 0.04);
+            transition: 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 25px rgba(15, 23, 42, 0.08);
+        }
+        
+        .stat-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        
+        .stat-label {
+            color: #64748b;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .stat-icon {
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 9px;
+            background: #eef2ff;
+            color: #6366f1;
+        }
+        
+        .stat-card h2 {
+            color: #111827;
+            font-size: 27px;
+        }
+        /* ==============================
+           CONTENT GRID
+        ============================== */
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 22px;
+        }
+        
+        .panel {
+            background: white;
+            border: 1px solid #edf0f5;
+            border-radius: 15px;
+            padding: 22px;
+            box-shadow: 0 6px 20px rgba(15, 23, 42, 0.04);
+        }
+        
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .panel-header h2 {
+            font-size: 18px;
+            color: #111827;
+        }
+        
+        .panel-header span {
+            color: #94a3b8;
+            font-size: 12px;
+        }
+        /* ==============================
+           TASK CARDS
+        ============================== */
+        
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 11px;
+        }
+        
+        .task-card {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding: 14px;
+            border: 1px solid #edf0f5;
+            border-radius: 11px;
+            background: #fafbfc;
+            transition: 0.3s;
+        }
+        
+        .task-card:hover {
+            background: white;
+            border-color: #dbeafe;
+            transform: translateX(3px);
+        }
+        
+        .task-check {
+            width: 25px;
+            height: 25px;
+            flex-shrink: 0;
+            border: 2px solid #cbd5e1;
+            border-radius: 7px;
+            background: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .task-check.completed {
+            background: #6366f1;
+            border-color: #6366f1;
+        }
+        
+        .task-details {
+            flex: 1;
+        }
+        
+        .task-details h3 {
+            font-size: 14px;
+            color: #1e293b;
+            margin-bottom: 5px;
+        }
+        
+        .task-details p {
+            color: #94a3b8;
+            font-size: 11px;
+        }
+        
+        .task-meta {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+        
+        .priority {
+            padding: 5px 8px;
+            border-radius: 20px;
+            font-size: 9px;
+            font-weight: 800;
+        }
+        
+        .priority.high {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+        
+        .priority.medium {
+            background: #fef3c7;
+            color: #b45309;
+        }
+        
+        .priority.low {
+            background: #dcfce7;
+            color: #15803d;
+        }
+        
+        .delete-btn {
+            border: none;
+            background: transparent;
+            color: #94a3b8;
+            cursor: pointer;
+            font-size: 15px;
+        }
+        
+        .delete-btn:hover {
+            color: #dc2626;
+        }
+        /* ==============================
+           PROGRESS
+        ============================== */
+        
+        .progress-card {
+            margin-bottom: 22px;
+        }
+        
+        .progress-number {
+            font-size: 35px;
+            color: #111827;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+        
+        .progress-text {
+            color: #64748b;
+            font-size: 12px;
+            margin-bottom: 17px;
+        }
+        
+        .progress-bar {
+            height: 9px;
+            background: #e2e8f0;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient( 90deg, #6366f1, #8b5cf6);
+            border-radius: 20px;
+            transition: 0.5s;
+        }
+        /* ==============================
+           NOTIFICATION
+        ============================== */
+        
+        .notification {
+            padding: 15px;
+            border-radius: 11px;
+            background: #eef2ff;
+            border: 1px solid #e0e7ff;
+            color: #4f46e5;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+        /* Empty state */
+        
+        .empty {
+            text-align: center;
+            padding: 40px 20px;
+            color: #94a3b8;
+            font-size: 13px;
+        }
+        /* ==============================
+           RESPONSIVE
+        ============================== */
+        
+        @media (max-width: 1000px) {
+            .dashboard {
+                grid-template-columns: 190px 1fr;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 700px) {
+            .topbar {
+                padding: 0 18px;
+            }
+            .user-name {
+                display: none;
+            }
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            .sidebar {
+                display: flex;
+                overflow-x: auto;
+                padding: 10px;
+                border-right: none;
+                border-bottom: 1px solid #e5e7eb;
+            }
+            .sidebar-title {
+                display: none;
+            }
+            .sidebar a {
+                white-space: nowrap;
+                margin: 0 3px;
+            }
+            .main-content {
+                padding: 22px 16px;
+            }
+            .welcome {
+                align-items: flex-start;
+                gap: 15px;
+                flex-direction: column;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        @media (max-width: 450px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .task-meta {
+                display: none;
+            }
+            .welcome h1 {
+                font-size: 25px;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- ==============================
+         TOP BAR
+    ============================== -->
+
+    <header class="topbar">
+
+        <a href="user-dashboard.html" class="brand">
+
+            <div class="brand-icon">
+                ✓
+            </div>
+
+            Task<span>Flow</span>
+
+        </a>
+
+        <div class="user-area">
+
+            <span class="user-name" id="userName">
+                User
+            </span>
+
+            <button class="logout-btn" onclick="logout()">
+                Logout
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- ==============================
+         DASHBOARD
+    ============================== -->
+
+    <div class="dashboard">
+
+        <!-- SIDEBAR -->
+
+        <aside class="sidebar">
+
+            <div class="sidebar-title">
+                Menu
+            </div>
+
+            <a href="user-dashboard.html" class="active">
+
+                <span class="sidebar-icon">⌂</span> Dashboard
+
+            </a>
+
+            <a href="add-task.html">
+
+                <span class="sidebar-icon">＋</span> Add Task
+
+            </a>
+
+            <a href="#" onclick="showAllTasks()">
+
+                <span class="sidebar-icon">☷</span> All Tasks
+
+            </a>
+
+            <a href="#" onclick="showCompletedTasks()">
+
+                <span class="sidebar-icon">✓</span> Completed
+
+            </a>
+
+            <a href="#" onclick="showPendingTasks()">
+
+                <span class="sidebar-icon">◷</span> Pending
+
+            </a>
+
+        </aside>
+
+
+        <!-- MAIN -->
+
+        <main class="main-content">
+
+            <div class="welcome">
+
+                <div>
+
+                    <h1>
+                        Welcome back, <span id="welcomeName">User</span>!
+                    </h1>
+
+                    <p>
+                        Here's what's happening with your tasks today.
+                    </p>
+
+                </div>
+
+                <a href="add-task.html" class="add-task-btn">
+
+                    + Add New Task
+
+                </a>
+
+            </div>
+
+
+            <!-- STATS -->
+
+            <div class="stats-grid">
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <span class="stat-label">
+                            TOTAL TASKS
+                        </span>
+
+                        <div class="stat-icon">
+                            ☷
+                        </div>
+
+                    </div>
+
+                    <h2 id="totalTasks">
+                        0
+                    </h2>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <span class="stat-label">
+                            COMPLETED
+                        </span>
+
+                        <div class="stat-icon">
+                            ✓
+                        </div>
+
+                    </div>
+
+                    <h2 id="completedTasks">
+                        0
+                    </h2>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <span class="stat-label">
+                            PENDING
+                        </span>
+
+                        <div class="stat-icon">
+                            ◷
+                        </div>
+
+                    </div>
+
+                    <h2 id="pendingTasks">
+                        0
+                    </h2>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <span class="stat-label">
+                            HIGH PRIORITY
+                        </span>
+
+                        <div class="stat-icon">
+                            !
+                        </div>
+
+                    </div>
+
+                    <h2 id="highTasks">
+                        0
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <!-- CONTENT -->
+
+            <div class="content-grid">
+
+                <!-- TASKS -->
+
+                <section class="panel">
+
+                    <div class="panel-header">
+
+                        <h2>
+                            My Tasks
+                        </h2>
+
+                        <span id="taskCount">
+                            0 tasks
+                        </span>
+
+                    </div>
+
+                    <div class="task-list" id="taskList">
+
+                    </div>
+
+                </section>
+
+
+                <!-- RIGHT PANEL -->
+
+                <div>
+
+                    <section class="panel progress-card">
+
+                        <div class="panel-header">
+
+                            <h2>
+                                Progress
+                            </h2>
+
+                        </div>
+
+                        <div class="progress-number" id="progressPercent">
+                            0%
+                        </div>
+
+                        <div class="progress-text">
+                            Tasks completed
+                        </div>
+
+                        <div class="progress-bar">
+
+                            <div class="progress-fill" id="progressFill">
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <section class="panel">
+
+                        <div class="panel-header">
+
+                            <h2>
+                                Notifications
+                            </h2>
+
+                        </div>
+
+                        <div class="notification" id="notification">
+
+                            You have no new notifications.
+
+                        </div>
+
+                    </section>
+
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+
+    <script src="../js/auth.js"></script>
+    <script src="../js/user.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Sign Up | TaskFlow</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            background: radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.18), transparent 30%), radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.18), transparent 30%), linear-gradient(135deg, #f8faff, #eef2ff);
+        }
+        /* Background circles */
+        
+        body::before {
+            content: "";
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: rgba(99, 102, 241, 0.10);
+            filter: blur(70px);
+            top: -100px;
+            left: -100px;
+            z-index: -1;
+        }
+        
+        body::after {
+            content: "";
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: rgba(139, 92, 246, 0.10);
+            filter: blur(70px);
+            bottom: -100px;
+            right: -100px;
+            z-index: -1;
+        }
+        /* Main Container */
+        
+        .signup-container {
+            width: 100%;
+            max-width: 1000px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 30px 70px rgba(30, 41, 59, 0.15);
+        }
+        /* Left Side */
+        
+        .signup-left {
+            padding: 50px 45px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(145deg, #4f46e5, #7c3aed);
+        }
+        
+        .signup-left::before {
+            content: "";
+            position: absolute;
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.08);
+            top: -100px;
+            right: -80px;
+        }
+        
+        .signup-left::after {
+            content: "";
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.06);
+            bottom: -70px;
+            left: -50px;
+        }
+        
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            text-decoration: none;
+            font-size: 25px;
+            font-weight: 800;
+            margin-bottom: 50px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .brand-icon {
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.18);
+        }
+        
+        .signup-left-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .signup-left h1 {
+            font-size: 40px;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+        
+        .signup-left p {
+            color: #e0e7ff;
+            line-height: 1.7;
+            font-size: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .benefit {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        
+        .benefit-icon {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.16);
+        }
+        /* Right Side */
+        
+        .signup-right {
+            padding: 45px 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.9);
+        }
+        
+        .heading {
+            margin-bottom: 25px;
+        }
+        
+        .heading h2 {
+            font-size: 31px;
+            color: #111827;
+            margin-bottom: 8px;
+        }
+        
+        .heading p {
+            color: #64748b;
+            font-size: 14px;
+        }
+        /* Form */
+        
+        .form-group {
+            margin-bottom: 17px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 13px 15px;
+            border: 1px solid #dbe2ea;
+            border-radius: 10px;
+            outline: none;
+            background: #f8fafc;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+        
+        .form-group input:focus {
+            background: white;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.10);
+        }
+        
+        .password-hint {
+            color: #94a3b8;
+            font-size: 10px;
+            margin-top: 6px;
+        }
+        
+        .signup-btn {
+            width: 100%;
+            border: none;
+            padding: 14px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 10px 22px rgba(99, 102, 241, 0.25);
+            transition: 0.3s;
+        }
+        
+        .signup-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 28px rgba(99, 102, 241, 0.32);
+        }
+        /* Bottom */
+        
+        .login-text {
+            text-align: center;
+            margin-top: 22px;
+            color: #64748b;
+            font-size: 13px;
+        }
+        
+        .login-text a {
+            color: #6366f1;
+            font-weight: 700;
+            text-decoration: none;
+        }
+        
+        .login-text a:hover {
+            text-decoration: underline;
+        }
+        
+        .back-home {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #94a3b8;
+            font-size: 12px;
+            text-decoration: none;
+        }
+        
+        .back-home:hover {
+            color: #6366f1;
+        }
+        /* Responsive */
+        
+        @media (max-width: 750px) {
+            body {
+                padding: 20px;
+            }
+            .signup-container {
+                grid-template-columns: 1fr;
+            }
+            .signup-left {
+                padding: 40px 30px;
+            }
+            .signup-left h1 {
+                font-size: 33px;
+            }
+            .brand {
+                margin-bottom: 30px;
+            }
+            .signup-right {
+                padding: 40px 30px;
+            }
+        }
+        
+        @media (max-width: 450px) {
+            .signup-left {
+                padding: 30px 22px;
+            }
+            .signup-right {
+                padding: 35px 22px;
+            }
+            .signup-left h1 {
+                font-size: 29px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="signup-container">
+
+        <!-- LEFT SECTION -->
+
+        <section class="signup-left">
+
+            <a href="index.html" class="brand">
+
+                <div class="brand-icon">
+                    ✓
+                </div>
+
+                TaskFlow
+
+            </a>
+
+
+            <div class="signup-left-content">
+
+                <h1>
+                    Start managing<br> your tasks!
+                </h1>
+
+                <p>
+                    Create your TaskFlow account and organize your projects, deadlines and daily tasks in one simple place.
+                </p>
+
+                <div class="benefit">
+
+                    <div class="benefit-icon">
+                        ✓
+                    </div>
+
+                    Create and manage tasks
+
+                </div>
+
+
+                <div class="benefit">
+
+                    <div class="benefit-icon">
+                        ✓
+                    </div>
+
+                    Set priorities and deadlines
+
+                </div>
+
+
+                <div class="benefit">
+
+                    <div class="benefit-icon">
+                        ✓
+                    </div>
+
+                    Track your productivity
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- RIGHT SECTION -->
+
+        <section class="signup-right">
+
+            <div class="heading">
+
+                <h2>Create Account</h2>
+
+                <p>
+                    Fill in the details below to get started.
+                </p>
+
+            </div>
+
+
+            <form onsubmit="signup(event)">
+
+                <div class="form-group">
+
+                    <label for="name">
+                        Full Name
+                    </label>
+
+                    <input type="text" id="name" placeholder="Enter your full name" required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Email Address
+                    </label>
+
+                    <input type="email" id="email" placeholder="Enter your email" required>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <input type="password" id="password" placeholder="Create a password" minlength="6" required>
+
+                    <div class="password-hint">
+                        Password must contain at least 6 characters.
+                    </div>
+
+                </div>
+
+
+                <button type="submit" class="signup-btn">
+
+                    Create Account
+
+                </button>
+
+            </form>
+
+
+            <div class="login-text">
+
+                Already have an account?
+
+                <a href="login.html">
+                    Login
+                </a>
+
+            </div>
+
+
+            <a href="index.html" class="back-home">
+                ← Back to Home
+            </a>
+
+        </section>
+
+    </div>
+
+
+    <script src="js/auth.js"></script>
+
+</body>
+
+</html>
